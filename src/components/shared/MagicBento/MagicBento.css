@@ -1,0 +1,229 @@
+.magic-bento-section {
+  position: relative;
+  width: 100%;
+  perspective: 1200px;
+}
+
+.magic-bento-section .grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------
+   Card
+--------------------------------------------------------- */
+
+.magic-bento-card {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+  --glow-radius: 300px;
+  --glow-color: 210, 187, 255;
+
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+
+/* Cursor-following border */
+
+.magic-bento-border-enabled
+  .magic-bento-card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  padding: 1px;
+
+  border-radius: inherit;
+
+  background:
+    radial-gradient(
+      var(--glow-radius) circle at
+        var(--glow-x)
+        var(--glow-y),
+      rgba(
+        var(--glow-color),
+        calc(var(--glow-intensity) * 0.9)
+      )
+      0%,
+      rgba(
+        var(--glow-color),
+        calc(var(--glow-intensity) * 0.45)
+      )
+      30%,
+      transparent 65%
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  opacity: var(--glow-intensity);
+
+  transition: opacity 0.25s ease;
+
+  z-index: 50;
+}
+
+/* ---------------------------------------------------------
+   Hover
+--------------------------------------------------------- */
+
+.magic-bento-card:hover {
+  border-color: rgba(210, 187, 255, 0.28);
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.28),
+    0 0 35px
+      rgba(
+        210,
+        187,
+        255,
+        calc(var(--glow-intensity) * 0.12)
+      );
+}
+
+/* ---------------------------------------------------------
+   Particles
+--------------------------------------------------------- */
+
+.magic-bento-particle {
+  pointer-events: none;
+  filter: blur(0.2px);
+}
+
+/* ---------------------------------------------------------
+   Click ripple
+--------------------------------------------------------- */
+
+.magic-bento-click-ripple {
+  position: absolute;
+
+  border-radius: 999px;
+
+  pointer-events: none;
+
+  z-index: 100;
+
+  transform-origin: center;
+}
+
+/* ---------------------------------------------------------
+   Global spotlight
+--------------------------------------------------------- */
+
+.magic-bento-global-spotlight {
+  position: fixed;
+
+  width: 750px;
+  height: 750px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  z-index: 5;
+
+  transform: translate(-50%, -50%);
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(
+        210,
+        187,
+        255,
+        0.12
+      )
+      0%,
+
+      rgba(
+        210,
+        187,
+        255,
+        0.065
+      )
+      20%,
+
+      rgba(
+        210,
+        187,
+        255,
+        0.025
+      )
+      42%,
+
+      transparent
+      70%
+    );
+
+  mix-blend-mode: screen;
+
+  opacity: 0;
+
+  will-change:
+    transform,
+    opacity;
+
+  filter: blur(8px);
+}
+
+/* ---------------------------------------------------------
+   Keep content above effects
+--------------------------------------------------------- */
+
+.magic-bento-card > * {
+  position: relative;
+  z-index: 10;
+}
+
+/* ---------------------------------------------------------
+   Mobile
+--------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .magic-bento-card {
+    transform: none !important;
+  }
+
+  .magic-bento-global-spotlight {
+    display: none;
+  }
+
+  .magic-bento-card::after {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------
+   Reduced motion
+--------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-bento-card {
+    transform: none !important;
+    transition: none;
+  }
+
+  .magic-bento-global-spotlight {
+    display: none;
+  }
+}
